@@ -1,0 +1,10 @@
+% Format explaination of equation parameters as tubular in a tufte sidenote.
+% Note this command should placed before the equation environment. (e.g. align,
+% equation)
+\newcommand{\parameternote}[1]{
+  \marginnote{\\[1.8em]
+    \begin{tabularx}{\marginparwidth}{@{\hskip .2em} l @{\hskip .5em} X @{\hskip .1em}}
+    #1
+    \end{tabularx}
+  }
+}

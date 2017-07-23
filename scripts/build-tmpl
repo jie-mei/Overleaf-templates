@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Insert file content to the annotated position and output to a new file.
+#
+# Arguements:
+#   1: pathname to the input file
+#   2: pathname to the output file
+
+set -e # terminate on error
+
+cp -f $1 $2
+
+# Substitute the file INPUT annotation in depth-first order.
+while :; do
+  files=`grep -n 'INPUT:' $2 | cut -d ':' -f 3`
+  [ -z "${files}" ] && break
+  echo "${files}" | while read -r file; do
+    # Retrieve substituted file in the `src/components` folder.
+    path="src/component/${file}"
+    if [ ! -e "${path}" ]; then
+      echo "ERROR: ${path} not found."
+      exit 1
+    fi
+    sed -i -e "/INPUT:${file}/{r ${path}" -e 'd}' $2
+  done
+done

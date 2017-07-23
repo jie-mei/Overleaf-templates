@@ -1,0 +1,15 @@
+\usepackage{mdframed}
+\mdfdefinestyle{comment}{%
+  topline=false,%
+  bottomline=false,%
+  rightline=false,%
+  leftmargin=2em,%
+  rightmargin=0em,%
+  middlelinewidth=20pt,%
+  linecolor=gray!20,%
+  fontcolor=gray%
+}
+
+\newenvironment{more}%
+  {\begin{mdframed}[style=comment]}%
+  {\end{mdframed}}

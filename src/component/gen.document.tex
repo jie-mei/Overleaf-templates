@@ -1,0 +1,20 @@
+\IfFileExists{preamble.tex}{
+  \input{preamble}
+}{}
+
+\begin{document}
+
+\maketitle
+
+\input{content}
+
+\IfFileExists{bibliography.bib}{
+  \bibliographystyle{abbrv}
+  \bibliography{bibliography}
+}{}
+
+\IfFileExists{glossary.tex}{
+  \printglossary
+}{}
+
+\end{document}

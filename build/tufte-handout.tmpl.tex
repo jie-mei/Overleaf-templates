@@ -1,0 +1,329 @@
+\documentclass{tufte-handout}
+
+%-------------------------------------------------------------------------------
+% General settings for item listing environments.
+%-------------------------------------------------------------------------------
+
+\usepackage{enumitem}
+
+% Replace itemize bullet by `--`.
+\def\labelitemi{--}
+
+% Add 2em indentation for items in the listing environment.
+\setlist[itemize,1]{leftmargin=2em}
+\setlist[enumerate,1]{leftmargin=2em}
+%-------------------------------------------------------------------------------
+% General settings for math mode.
+%-------------------------------------------------------------------------------
+
+\usepackage{amsmath}
+\usepackage{mdframed}
+\mdfdefinestyle{comment}{%
+  topline=false,%
+  bottomline=false,%
+  rightline=false,%
+  leftmargin=2em,%
+  rightmargin=0em,%
+  middlelinewidth=20pt,%
+  linecolor=gray!20,%
+  fontcolor=gray%
+}
+
+\newenvironment{more}%
+  {\begin{mdframed}[style=comment]}%
+  {\end{mdframed}}
+%-------------------------------------------------------------------------------
+% General settings for table environment.
+%-------------------------------------------------------------------------------
+
+% Increase table row space.
+\renewcommand{\arraystretch}{1.2}
+
+\usepackage{tabularx}
+
+% Enable multiple columns and multirow cells.
+\usepackage{multicol,multirow}
+
+% Allow multiline cells \thread and \makecell
+\usepackage{makecell}
+
+% Allow predifined line separaters with \toprule, \midrule, \cmidrule, and
+% \bottomrule commands.
+\usepackage{booktabs}
+
+% Tips: Remove space to the vertical edges uses
+% \begin{tabular}{@{}lll@{}}
+
+% Shortcut for inline code.
+\newcommand{\code}[1]{{\fboxsep2pt \colorbox{gray!15}{\lstinline{#1}}}}
+\usepackage{subcaption}
+\captionsetup{compatibility=false}
+
+%-------------------------------------------------------------------------------
+% Preliminary
+%-------------------------------------------------------------------------------
+
+\usepackage{xcolor}
+\usepackage{amssymb} % used by glossary
+
+\usepackage{soul} % enable `ul` command that allow line break for underline text
+
+%-------------------------------------------------------------------------------
+% Linkage
+%-------------------------------------------------------------------------------
+
+\usepackage{url}
+\makeatletter
+\g@addto@macro{\UrlBreaks}{\UrlOrds}
+\makeatother
+
+% Note: This package have to be placed before 'glossary' and after 'imakeidx'.
+\usepackage{hyperref}
+\hypersetup{
+  bookmarksnumbered=true,
+  bookmarksopen=true,
+  bookmarksopenlevel=1,
+  colorlinks=true,
+  %footnotecolor=blue,
+  pdfstartview=Fit,
+  pdfpagemode=UseOutlines
+}
+
+%-------------------------------------------------------------------------------
+% Glossary
+%-------------------------------------------------------------------------------
+
+\IfFileExists{glossary.tex}{
+  \usepackage[nopostdot,toc,style=super]{glossaries}
+  \makeglossaries
+  \input{glossary}
+}{}
+
+%-------------------------------------------------------------------------------
+% Glossary
+%-------------------------------------------------------------------------------
+
+
+% Used for printing a trailing space better than using a tilde (~) using the
+% \xspace command
+\usepackage{xspace}
+% Print text in maroon
+\newcommand{\hlred}[1]{\textcolor{Maroon}{#1}}
+% Command to print a very short space
+\newcommand{\hairsp}{\hspace{1pt}}
+% Command to print i.e.
+\newcommand{\ie}{\textit{i.\hairsp{}e.}\xspace}
+% Command to print e.g.
+\newcommand{\eg}{\textit{e.\hairsp{}g.}\xspace}
+
+% New command for note.
+\newcommand{\note}[1]{\footnote{\hlred{NOTE}: #1}}
+
+% Set up the images/graphics package
+\usepackage{graphicx}
+\setkeys{Gin}{width=\linewidth,totalheight=\textheight,keepaspectratio}
+\graphicspath{{graphics/}}
+
+% The units package provides nice, non-stacked fractions and better spacing
+% for units.
+\usepackage{units}
+\usepackage[english]{babel}
+\usepackage[latin1]{inputenc}
+
+% The fancyvrb package lets us customize the formatting of verbatim
+% environments. We use a slightly smaller font.
+\usepackage{fancyvrb}
+\fvset{fontsize=\normalsize}
+
+% Definition environment.
+\usepackage{thmtools}
+%\theoremstyle{definition}
+\declaretheorem[style=remark]{remark}
+\newtheorem{definition}{Definition}
+\declaretheorem[style=remark]{example}
+
+%----------------------------------------------------------------
+% Footnote Format
+%----------------------------------------------------------------
+
+% Define footnote color option.
+\ifx\mycounter\undefined
+  \newcounter{Hfootnote}
+\fi
+\makeatletter
+\def\@footnotecolor{red}
+\define@key{Hyp}{footnotecolor}{%
+ \HyColor@HyperrefColor{#1}\@footnotecolor%
+}
+\def\@footnotemark{%
+  \leavevmode
+  \ifhmode\edef\@x@sf{\the\spacefactor}\nobreak\fi
+  \stepcounter{Hfootnote}%
+  \global\let\Hy@saved@currentHref\@currentHref
+  \hyper@makecurrent{Hfootnote}%
+  \global\let\Hy@footnote@currentHref\@currentHref
+  \global\let\@currentHref\Hy@saved@currentHref
+  \hyper@linkstart{footnote}{\Hy@footnote@currentHref}%
+  \@makefnmark
+  \hyper@linkend
+  \ifhmode\spacefactor\@x@sf\fi
+  \relax
+}%
+\makeatother
+
+%----------------------------------------------------------------
+% TOC Format
+%----------------------------------------------------------------
+
+\setcounter{tocdepth}{3}
+
+\pdfbookmark{\contentsname}{toc}
+
+%----------------------------------------------------------------
+% Section Format
+%----------------------------------------------------------------
+
+% add numbers to chapters, sections, subsections
+\setcounter{secnumdepth}{2}
+
+% chapter format
+\titleformat{\chapter}%
+  {\huge\rmfamily\itshape}% format applied to label+text
+  {}% label
+  {0em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+
+% section format
+\titleformat{\section}%
+  {\normalfont\Large\itshape}% format applied to label+text
+  {\llap{\colorbox{black}{\parbox{1.5cm}{\hfill\color{white}\thesection}}\hspace{0.5em}}}% label
+  {0em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+
+% subsection format
+\titleformat{\subsection}%
+  {\normalfont\large\itshape\color{black}}% format applied to label+text
+  {\llap{\colorbox{gray}{\parbox{1.0cm}{\hfill\color{white}\thesubsection}}\hspace{0.5em}}}% label
+  {0em}% horizontal separation between label and title body
+  {}% before the title body
+  []% after the title body
+
+%----------------------------------------------------------------
+% Math Annotations
+%----------------------------------------------------------------
+
+\newcommand{\mmatrix}[1]{\ensuremath \mathbf{#1}}
+\newcommand{\mvector}[1]{\ensuremath \mathbf{#1}}
+\newcommand{\mset}[1]{\ensuremath \mathcal{#1}}
+
+\usepackage{xstring} % enable conditioning on string values
+
+\usepackage{xcolor}
+
+\definecolor{commentsColor}{rgb}{0.497495, 0.497587, 0.497464}
+\definecolor{keywordsColor}{rgb}{0.000000, 0.000000, 0.635294}
+\definecolor{stringColor}{rgb}{0.558215, 0.000000, 0.135316}
+
+\usepackage{listings}
+\lstset{ %
+  backgroundcolor=\color{white},   % choose the background color; you must add \usepackage{color} or \usepackage{xcolor}
+  basicstyle=\footnotesize\ttfamily,        % the size of the fonts that are used for the code
+  breakatwhitespace=false,         % sets if automatic breaks should only happen at whitespace
+  breaklines=true,                 % sets automatic line breaking
+  captionpos=b,                    % sets the caption-position to bottom
+  commentstyle=\color{commentsColor}\textit,    % comment style
+  deletekeywords={...},            % if you want to delete keywords from the given language
+  escapeinside={\%*}{*)},          % if you want to add LaTeX within your code
+  extendedchars=true,              % lets you use non-ASCII characters; for 8-bits encodings only, does not work with UTF-8
+  frame=tb,	                   	   % adds a frame around the code
+  keepspaces=true,                 % keeps spaces in text, useful for keeping indentation of code (possibly needs columns=flexible)
+  keywordstyle=\color{keywordsColor}\bfseries,       % keyword style
+  language=Python,                 % the language of the code (can be overrided per snippet)
+  otherkeywords={*,...},           % if you want to add more keywords to the set
+  numbers=left,                    % where to put the line-numbers; possible values are (none, left, right)
+  numbersep=5pt,                   % how far the line-numbers are from the code
+  numberstyle=\tiny\color{commentsColor}, % the style that is used for the line-numbers
+  rulecolor=\color{black},         % if not set, the frame-color may be changed on line-breaks within not-black text (e.g. comments (green here))
+  showspaces=false,                % show spaces everywhere adding particular underscores; it overrides 'showstringspaces'
+  showstringspaces=false,          % underline spaces within strings only
+  showtabs=false,                  % show tabs within strings adding particular underscores
+  stepnumber=1,                    % the step between two line-numbers. If it's 1, each line will be numbered
+  stringstyle=\color{stringColor}, % string literal style
+  tabsize=2,	                   % sets default tabsize to 2 spaces
+  title=\lstname,                  % show the filename of files included with \lstinputlisting; also try caption instead of title
+  columns=fixed                    % Using fixed column width (for e.g. nice alignment)
+}
+
+%----------------------------------------------------------------
+% Config from Xiang
+%----------------------------------------------------------------
+
+
+\newcommand{\red}[1]{{\color{red}{#1}}}
+\newcommand{\blue}[1]{{\color{blue}{#1}}}
+
+\usepackage{fancyvrb}
+\usepackage{mathrsfs}
+\usepackage{dutchcal}
+\usepackage{yfonts}
+\usepackage{eufrak}
+
+\usepackage{graphicx} % Needed to insert images into the document
+\graphicspath{{img/}}
+\newtheorem{prop}{Proposition}
+\newtheorem{theorem}{Theorem}
+% Format explaination of equation parameters as tubular in a tufte sidenote.
+% Note this command should placed before the equation environment. (e.g. align,
+% equation)
+\newcommand{\parameternote}[1]{
+  \marginnote{\\[1.8em]
+    \begin{tabularx}{\marginparwidth}{@{\hskip .2em} l @{\hskip .5em} X @{\hskip .1em}}
+    #1
+    \end{tabularx}
+  }
+}
+
+\newcommand{\tfapiurl}{https://www.tensorflow.org/api_docs/python/tf/}
+\newcommand{\tf}[3]{
+  \IfEq{#1}{}{%
+    \IfEq{#3}{}{%
+      \href{\tfapiurl#2}{\tt tf.#2}%
+    }{%
+      \href{\tfapiurl#2\##3}{\tt tf.#2.#3}%
+    }%
+  }{%
+    \IfEq{#2}{}{%
+      \href{\tfapiurl#1}{\tt tf.#1}%
+    }{%
+      \IfEq{#3}{}{%
+        \href{\tfapiurl#1/#2}{\tt tf.#1.#2}%
+      }{%
+        \href{\tfapiurl#1/#2\##3}{\tt tf.#1.#2.#3}%
+      }%
+    }%
+  }%
+}
+
+\IfFileExists{preamble.tex}{
+  \input{preamble}
+}{}
+
+\begin{document}
+
+\maketitle
+
+\input{content}
+
+\IfFileExists{bibliography.bib}{
+  \bibliographystyle{abbrv}
+  \bibliography{bibliography}
+}{}
+
+\IfFileExists{glossary.tex}{
+  \printglossary
+}{}
+
+\end{document}
+
